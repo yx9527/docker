@@ -1,0 +1,9 @@
+name: Docker Image CI
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build the Docker image
+      run: docker build . -f Dockerfile.alpine -t alpine:$(date +%s) && docker build . -f Dockerfile.chisel -t chisel:$(date +%s) && docker build . -f Dockerfile.centos -t centos:$(date +%s) && docker build . -f Dockerfile.ubuntu -t ubuntu:$(date +%s)

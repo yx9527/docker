@@ -1,0 +1,58 @@
+FROM centos:centos7
+MAINTAINER yx9527
+RUN \
+#   sed -i -e 's/^\s*mirrorlist/#&/' -e 's/^\s*#\(\s*baseurl\s*=\s*\).\+\(os\|updates\|extras\|centosplus\)/\1http:\/\/192.168.100.100\/centos\/7.7.1908\/\2/' /etc/yum.repos.d/CentOS-Base.repo && \
+#   sed -i -e 's/^\s*metalink/#&/' -e 's/^\s*#\(\s*baseurl\s*=\s*\).\+\(epel\)/\1http:\/\/192.168.100.100\/\2/' /etc/yum.repos.d/CentOS-Base.repo && \
+    yum -y update && \
+    yum -y install epel-release redhat-lsb && \
+    yum -y groupinstall Xfce && \
+    yum -y install bash csh ksh sudo firefox gnome-terminal \
+                   net-tools openssh-server tigervnc-server nfs-utils \
+                   vim emacs git gitk ctags-etags cmake gdb \
+                   libXScrnSaver xulrunner.i686 libcanberra-gtk2.i686 \
+                   autoconf automake @development-tools curl dtc libmpc-devel mpfr-devel gmp-devel libusb-devel gawk gcc-c++ bison flex texinfo gperf libtool patchutils bc zlib-devel expat-devel flex-devel \
+                   python python-pip python3 python3-pip perl && \
+#   yum -y install opencv-devel && \
+    yum -y install iproute \
+                   gcc \
+                   g++ \
+                   net-tools \
+                   ncurses-devel \
+                   zlib-devel \
+                   openssl-devel \
+                   flex \
+                   bison \
+                   libselinux \
+                   xterm \
+                   autoconf \
+                   libtool \
+                   texinfo \
+                   SDL-devel \
+                   glibc-devel \
+                   glibc \
+                   glib2-devel \
+                   automake \
+                   screen \
+                   pax \
+                   libstdc++ \
+                   gawk \
+                   python && \
+#   curl -L https://www.scala-sbt.org/sbt-rpm.repo | tee /etc/yum.repos.d/sbt-rpm.repo && \
+#   yum -y install java java-devel sbt && \
+    yum clean all && \
+    rm -rf /tmp/* && \
+#   cd && git clone https://github.com/verilator/verilator -b v4.210 && cd verilator && \
+#   autoconf && ./configure && make -j "$(nproc)" && make install && cd - && rm -rf verilator && \
+    systemctl set-default graphical.target && \
+    useradd -m -s /bin/bash yangxu && \
+    chmod u+w /etc/sudoers && \
+    echo "yangxu ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
+    chmod -w /etc/sudoers && \
+    echo "yangxu: " | chpasswd && \
+    echo "root: " | chpasswd && \
+#   sed -i 's/^\(\s*SELINUX\s*=\).\+/\1disabled/' /etc/selinux/config && \
+    systemctl disable nfs-server rpcbind && \
+    systemctl enable sshd
+EXPOSE 22
+EXPOSE 5901
+CMD ["/sbin/init"]
