@@ -1,0 +1,20 @@
+FROM openjdk:8-alpine
+MAINTAINER yx9527
+RUN echo $'\
+if [ "$#" -eq 0 ]; then\n\
+    /usr/bin/env\n\
+elif [ "$1" == "--null" ]; then\n\
+    /usr/bin/env | tr \'\\n\' \'\\000\'\n\
+else\n\
+    /usr/bin/env "$@"\n\
+fi'\
+    > /usr/local/bin/env && \
+    sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/repositories && \
+    apk add --no-cache bash && \
+    apk add --no-cache --virtual=.dependencies git tar wget && \
+    wget -O- "https://github.com/sbt/sbt/releases/download/v1.4.9/sbt-1.4.9.tgz" \
+        | tar xzf - -C /usr/local --strip-components=1 && \
+    apk del --no-cache .dependencies
+VOLUME /work
+WORKDIR /work
+CMD ["sbt"]

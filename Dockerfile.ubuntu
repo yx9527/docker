@@ -1,0 +1,64 @@
+FROM ubuntu:18.04
+MAINTAINER yx9527
+ENV DEBIAN_FRONTEND noninteractive
+RUN \
+    apt-get update && \
+    apt-get -y install apt-transport-https apt-utils curl gnupg-agent lsb-core lsb-release wget && \
+    echo "\
+deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ $(lsb_release -cs) main restricted universe multiverse\n\
+"#" deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ $(lsb_release -cs) main restricted universe multiverse\n\
+deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ $(lsb_release -cs)-updates main restricted universe multiverse\n\
+"#" deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ $(lsb_release -cs)-updates main restricted universe multiverse\n\
+deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ $(lsb_release -cs)-backports main restricted universe multiverse\n\
+"#" deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ $(lsb_release -cs)-backports main restricted universe multiverse\n\
+deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ $(lsb_release -cs)-security main restricted universe multiverse\n\
+"#" deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ $(lsb_release -cs)-security main restricted universe multiverse\n\
+"#" deb http://192.168.100.100/ubuntu/ $(lsb_release -cs) main restricted universe multiverse\n\
+"#" deb http://192.168.100.100/ubuntu/ $(lsb_release -cs)-updates main restricted universe multiverse\n\
+"#" deb http://192.168.100.100/ubuntu/ $(lsb_release -cs)-security main restricted universe multiverse\n\
+    " | tee /etc/apt/sources.list && \
+    echo "deb https://repo.scala-sbt.org/scalasbt/debian /" | tee /etc/apt/sources.list.d/sbt.list && \
+    curl -sL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x2EE0EA64E40A89B84B2DF73499E82A75642AC823" | apt-key add && \
+    apt-get update && \
+    apt-get -y dist-upgrade && \
+    apt-get -y install xfce4 xfce4-terminal && \
+    apt-get -y install bash bash-completion csh ksh dc time sudo locales firefox p7zip-full p7zip-rar \
+                       net-tools iputils-ping telnet openssh-server tightvncserver nfs-kernel-server \
+                       vim emacs git gitk exuberant-ctags cmake nasm ninja-build dos2unix \
+                       autoconf automake autotools-dev curl libmpc-dev libmpfr-dev libgmp-dev libusb-1.0-0-dev gawk build-essential bison flex texinfo gperf libtool patchutils bc zlib1g-dev device-tree-compiler pkg-config libexpat-dev \
+                       autoconf automake autotools-dev curl python3 libmpc-dev libmpfr-dev libgmp-dev gawk build-essential bison flex texinfo gperf libtool patchutils bc zlib1g-dev libexpat-dev \
+                       python3 perl && \
+    apt-get -y install libprotobuf-dev protobuf-compiler && \
+    apt-get -y install libopencv-dev && \
+    apt-get -y install default-jdk sbt && \
+    apt-get -y install ddd qt5-default && \
+    apt-get -y install mlocate numactl && \
+    apt-get -y install gcc-multilib && \
+    apt-get -y install libglib2.0-dev libpixman-1-dev && \
+    for i in `find /usr/include -name floatn.h`; do sed -i 's/^\(\s*#\s\+define\s\+__HAVE_FLOAT128\s\+\)\S\+/\10/' $i; done && \
+    apt-get -y install parallel python-cairo python-pil && \
+#   curl https://bootstrap.pypa.io/get-pip.py | python3 && \
+#   curl https://bootstrap.pypa.io/pip/2.7/get-pip.py | python && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* && \
+#   cd && git clone https://github.com/verilator/verilator -b v4.210 && cd verilator && \
+#   autoconf && ./configure && make -j "$(nproc)" && make install && cd - && rm -rf verilator && \
+    if [ ! -f /bin/sh ] || [ -L /bin/sh ]; then ln -sf /bin/bash /bin/sh; fi && \
+    useradd -m -s /bin/bash yangxu && \
+    chmod u+w /etc/sudoers && \
+    echo "yangxu ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
+    chmod -w /etc/sudoers && \
+    echo "yangxu: " | chpasswd && \
+    echo "root: " | chpasswd && \
+    locale-gen en_US.UTF-8 && \
+    systemctl set-default graphical.target && \
+    systemctl disable nfs-kernel-server && \
+    sed -i 's/^\s*#*\s*\(AllowAgentForwarding\|AllowTcpForwarding\|X11Forwarding\).\+/\1 yes/;\
+            s/^\s*#*\s*\(X11UseLocalhost\).\+/\1 no/' /etc/ssh/sshd_config && \
+    sed -i 's/^\s*#*\s*\(Forward\S\+\).\+/\1 yes/;\
+            s/^\s*#*\s*\(GSSAPIAuthentication\).\+/\1 no/' /etc/ssh/ssh_config && \
+    systemctl enable ssh && \
+    updatedb
+EXPOSE 22
+EXPOSE 5901
+CMD ["/sbin/init"]

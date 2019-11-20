@@ -1,0 +1,46 @@
+FROM ubuntu:18.04
+MAINTAINER yx9527
+ENV DEBIAN_FRONTEND noninteractive
+RUN \
+    apt-get update && \
+    apt-get -y install apt-transport-https apt-utils curl gnupg-agent lsb-core lsb-release wget && \
+    echo "\
+deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ $(lsb_release -cs) main restricted universe multiverse\n\
+"#" deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ $(lsb_release -cs) main restricted universe multiverse\n\
+deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ $(lsb_release -cs)-updates main restricted universe multiverse\n\
+"#" deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ $(lsb_release -cs)-updates main restricted universe multiverse\n\
+deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ $(lsb_release -cs)-backports main restricted universe multiverse\n\
+"#" deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ $(lsb_release -cs)-backports main restricted universe multiverse\n\
+deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ $(lsb_release -cs)-security main restricted universe multiverse\n\
+"#" deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ $(lsb_release -cs)-security main restricted universe multiverse\n\
+"#" deb http://192.168.100.100/ubuntu/ $(lsb_release -cs) main restricted universe multiverse\n\
+"#" deb http://192.168.100.100/ubuntu/ $(lsb_release -cs)-updates main restricted universe multiverse\n\
+"#" deb http://192.168.100.100/ubuntu/ $(lsb_release -cs)-security main restricted universe multiverse\n\
+    " | tee /etc/apt/sources.list && \
+    echo "deb https://repo.scala-sbt.org/scalasbt/debian /" | tee /etc/apt/sources.list.d/sbt.list && \
+    curl -sL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x2EE0EA64E40A89B84B2DF73499E82A75642AC823" | apt-key add && \
+    apt-get update && \
+    apt-get -y dist-upgrade && \
+    apt-get -y install --no-install-recommends \
+                       autoconf \
+                       bc \
+                       bison \
+                       build-essential \
+                       ca-certificates \
+                       ccache \
+                       flex \
+                       git \
+                       libfl-dev \
+                       libgoogle-perftools-dev \
+                       perl \
+                       python3 && \
+    apt-get -y install autoconf automake autotools-dev curl libmpc-dev libmpfr-dev libgmp-dev libusb-1.0-0-dev gawk build-essential bison flex texinfo gperf libtool patchutils bc zlib1g-dev device-tree-compiler pkg-config libexpat-dev && \
+    apt-get -y install default-jdk sbt && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* && \
+#   cd && git clone https://github.com/verilator/verilator -b v4.210 && cd verilator && \
+#   autoconf && ./configure && make -j "$(nproc)" && make install && cd - && rm -rf verilator && \
+    if [ ! -f /bin/sh ] || [ -L /bin/sh ]; then ln -sf /bin/bash /bin/sh; fi && \
+VOLUME /work
+WORKDIR /work
+CMD ["sbt"]

@@ -1,0 +1,46 @@
+FROM centos:centos7
+MAINTAINER yx9527
+RUN \
+#   sed -i -e 's/^\s*mirrorlist/#&/' -e 's/^\s*#\(\s*baseurl\s*=\s*\).\+\(os\|updates\|extras\|centosplus\)/\1http:\/\/192.168.100.100\/centos\/7.7.1908\/\2/' /etc/yum.repos.d/CentOS-Base.repo && \
+#   sed -i -e 's/^\s*metalink/#&/' -e 's/^\s*#\(\s*baseurl\s*=\s*\).\+\(epel\)/\1http:\/\/192.168.100.100\/\2/' /etc/yum.repos.d/CentOS-Base.repo && \
+    yum -y update && \
+    yum -y install epel-release redhat-lsb && \
+    yum -y groupinstall Xfce && \
+    yum -y install bash bash-completion csh ksh dc time sudo firefox xfce4-terminal \
+                   net-tools openssh-server tigervnc-server nfs-utils \
+                   vim emacs git gitk ctags-etags cmake gdb nasm ninja-build dos2unix \
+                   libXScrnSaver xulrunner.i686 libcanberra-gtk2.i686 \
+                   autoconf automake @development-tools curl dtc libmpc-devel mpfr-devel gmp-devel libusb-devel gawk gcc-c++ bison flex texinfo gperf libtool patchutils bc zlib-devel expat-devel \
+                   autoconf automake python3 libmpc-devel mpfr-devel gmp-devel gawk bison flex texinfo patchutils gcc gcc-c++ zlib-devel expat-devel \
+                   python3 perl && \
+    yum -y install protobuf-devel protobuf-compiler && \
+    yum -y install opencv-devel && \
+#   curl -L https://www.scala-sbt.org/sbt-rpm.repo | tee /etc/yum.repos.d/sbt-rpm.repo && \
+#   yum -y install java jave-devel sbt && \
+    yum -y install mlocate numactl && \
+    yum -y install parallel python-cairocffi python-pillow && \
+#   curl https://bootstrap.pypa.io/get-pip.py | python3 && \
+#   curl https://bootstrap.pypa.io/pip/2.7/get-pip.py | python && \
+    yum clean all && \
+    rm -rf /tmp/* && \
+#   cd && git clone https://github.com/verilator/verilator -b v4.210 && cd verilator && \
+#   autoconf && ./configure && make -j "$(nproc)" && make install && cd - && rm -rf verilator && \
+    if [ ! -f /bin/sh ] || [ -L /bin/sh ]; then ln -sf /bin/bash /bin/sh; fi && \
+    useradd -m -s /bin/bash yangxu && \
+    chmod u+w /etc/sudoers && \
+    echo "yangxu ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
+    chmod -w /etc/sudoers && \
+    echo "yangxu: " | chpasswd && \
+    echo "root: " | chpasswd && \
+    if [ -f /etc/selinux/config ]; then sed -i 's/^\(\s*SELINUX\s*=\).\+/\1disabled/' /etc/selinux/config; fi && \
+    systemctl set-default graphical.target && \
+    systemctl disable nfs-server && \
+    sed -i 's/^\s*#*\s*\(AllowAgentForwarding\|AllowTcpForwarding\|X11Forwarding\).\+/\1 yes/;\
+            s/^\s*#*\s*\(X11UseLocalhost\).\+/\1 no/' /etc/ssh/sshd_config && \
+    sed -i 's/^\s*#*\s*\(Forward\S\+\).\+/\1 yes/;\
+            s/^\s*#*\s*\(GSSAPIAuthentication\).\+/\1 no/' /etc/ssh/ssh_config && \
+    systemctl enable sshd && \
+    updatedb
+EXPOSE 22
+EXPOSE 5901
+CMD ["/sbin/init"]
