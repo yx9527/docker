@@ -39,6 +39,8 @@ deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ $(lsb_release -cs)-security mai
     apt-get -y install parallel python-cairo python-pil && \
 #   curl https://bootstrap.pypa.io/get-pip.py | python3 && \
 #   curl https://bootstrap.pypa.io/pip/2.7/get-pip.py | python && \
+    curl https://raw.githubusercontent.com/yx9527/docker/master/vooya_u18-1.9-amd64.deb > /tmp/vooya.deb && \
+    for i in /tmp/vooya.deb; do if [ -f $i ]; then apt-get -y install libtiffxx5 libopenexr22 && dpkg -i $i && rm $i; fi done && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* && \
 #   cd && git clone https://github.com/verilator/verilator -b v4.210 && cd verilator && \

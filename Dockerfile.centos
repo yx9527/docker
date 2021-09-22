@@ -21,6 +21,8 @@ RUN \
     yum -y install parallel python-cairocffi python-pillow && \
 #   curl https://bootstrap.pypa.io/get-pip.py | python3 && \
 #   curl https://bootstrap.pypa.io/pip/2.7/get-pip.py | python && \
+    curl https://raw.githubusercontent.com/yx9527/docker/master/archive_vooya-1.9-16.x86_64.rpm > /tmp/vooya.rpm && \
+    for i in /tmp/vooya.rpm; do if [ -f $i ]; then yum -y install boost && rpm -ivh $i && rm $i; fi done && \
     yum clean all && \
     rm -rf /tmp/* && \
 #   cd && git clone https://github.com/verilator/verilator -b v4.210 && cd verilator && \
