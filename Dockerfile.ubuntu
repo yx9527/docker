@@ -38,9 +38,13 @@ deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ $(lsb_release -cs)-security mai
     apt-get -y install gcc-multilib && \
     apt-get -y install libglib2.0-dev libpixman-1-dev && \
     for i in `find /usr/include -name floatn.h`; do sed -i 's/^\(\s*#\s\+define\s\+__HAVE_FLOAT128\s\+\)\S\+/\10/' $i; done && \
-    apt-get -y install parallel python-cairo python-pil && \
+#   apt-get -y install parallel python-cairo python-pil && \
 #   curl https://bootstrap.pypa.io/get-pip.py | python3 && \
 #   curl https://bootstrap.pypa.io/pip/2.7/get-pip.py | python && \
+    if [ -f /usr/bin/python2 ] && [ -f /usr/bin/python3 ]; then \
+        update-alternatives --install /usr/bin/python python /usr/bin/python2 200; \
+        update-alternatives --install /usr/bin/python python /usr/bin/python3 300; \
+    fi && \
     curl https://raw.githubusercontent.com/yx9527/docker/master/vooya_u18-1.9-amd64.deb > /tmp/vooya.deb && \
     for i in /tmp/vooya.deb; do if [ -f $i ]; then apt-get -y install libtiffxx5 libopenexr22 && dpkg -i $i && rm $i; fi done && \
     apt-get clean && \

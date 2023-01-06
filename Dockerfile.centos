@@ -18,7 +18,7 @@ RUN \
 #   curl -L https://www.scala-sbt.org/sbt-rpm.repo | tee /etc/yum.repos.d/sbt-rpm.repo && \
 #   yum -y install java jave-devel sbt && \
     yum -y install mlocate numactl && \
-    yum -y install parallel python-cairocffi python-pillow && \
+#   yum -y install parallel python-cairocffi python-pillow && \
 #   curl https://bootstrap.pypa.io/get-pip.py | python3 && \
 #   curl https://bootstrap.pypa.io/pip/2.7/get-pip.py | python && \
     curl https://raw.githubusercontent.com/yx9527/docker/master/archive_vooya-1.9-16.x86_64.rpm > /tmp/vooya.rpm && \
