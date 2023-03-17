@@ -41,8 +41,10 @@ deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ $(lsb_release -cs)-security mai
 #   apt-get -y install parallel python-cairo python-pil && \
 #   curl https://bootstrap.pypa.io/get-pip.py | python3 && \
 #   curl https://bootstrap.pypa.io/pip/2.7/get-pip.py | python && \
-    if [ -f /usr/bin/python2 ] && [ -f /usr/bin/python3 ]; then \
+    if [ -f /usr/bin/python2 ]; then \
         update-alternatives --install /usr/bin/python python /usr/bin/python2 200; \
+    fi && \
+    if [ -f /usr/bin/python3 ]; then \
         update-alternatives --install /usr/bin/python python /usr/bin/python3 300; \
     fi && \
     curl https://raw.githubusercontent.com/yx9527/docker/master/vooya_u18-1.9-amd64.deb > /tmp/vooya.deb && \
