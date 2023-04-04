@@ -3,6 +3,7 @@ MAINTAINER yx9527
 RUN \
 #   sed -i -e 's/^\s*mirrorlist/#&/' -e 's/^\s*#\(\s*baseurl\s*=\s*\).\+\(os\|updates\|extras\|centosplus\)/\1http:\/\/192.168.100.100\/centos\/7.7.1908\/\2/' /etc/yum.repos.d/CentOS-Base.repo && \
 #   sed -i -e 's/^\s*metalink/#&/' -e 's/^\s*#\(\s*baseurl\s*=\s*\).\+\(epel\)/\1http:\/\/192.168.100.100\/\2/' /etc/yum.repos.d/CentOS-Base.repo && \
+    curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.rpm.sh | bash && \
     yum -y update && \
     yum -y install epel-release redhat-lsb && \
     yum -y groupinstall Xfce && \
@@ -23,6 +24,7 @@ RUN \
 #   curl https://bootstrap.pypa.io/pip/2.7/get-pip.py | python && \
     curl https://raw.githubusercontent.com/yx9527/docker/master/archive_vooya-1.9-16.x86_64.rpm > /tmp/vooya.rpm && \
     for i in /tmp/vooya.rpm; do if [ -f $i ]; then yum -y install boost && rpm -ivh $i && rm $i; fi done && \
+    yum -y install git-lfs && git lfs install && \
     curl https://raw.githubusercontent.com/yx9527/docker/master/make > /tmp/make && \
     for i in /bin /usr/bin; do if [ -f $i/make ]; then cp /tmp/make $i; fi done && \
     yum clean all && \
