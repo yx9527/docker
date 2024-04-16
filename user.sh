@@ -16,5 +16,11 @@ RUN sed -i "s/^\(`id -un`\):\(\w\+\):\(\w\+\):\(\w\+\):/\1:\2:`id -u`:`id -g`:/"
     sed -i "s/^\(`id -un`\):\(\w\+\):\(\w\+\):/\1:\2:`id -g`:/" /etc/group
 EOF
 docker build . -t $img:$tag
+docker run -it --rm $img:$tag /bin/bash -c " \\
+    for i in /usr/lib/x86_64-linux-gnu/libQt5Core.so.5; do if [ -f \$i ]; then \\
+        ls -al \$i.*.*; \\
+        strip --remove-section=.note.API-tag \$i; \\
+        ls -al \$i.*.*; \\
+    fi done "
 for i in `docker images|awk '/<none>/{print $3}'`; do docker rmi $i; done
 docker images
