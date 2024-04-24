@@ -33,7 +33,7 @@ deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ $(lsb_release -cs)-security mai
     apt-get -y install libprotobuf-dev protobuf-compiler && \
     apt-get -y install libopencv-dev && \
     apt-get -y install default-jdk sbt && \
-    apt-get -y install ddd && \
+    apt-get -y install ddd lcov valgrind && \
     apt-get -y install $(if [ ]; then echo qt5-default; else echo qtbase5-dev libfuse2; fi) && \
     apt-get -y install libsdl2-2.0 libsdl2-dev && \
     apt-get -y install mlocate numactl && \
