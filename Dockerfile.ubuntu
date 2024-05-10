@@ -1,4 +1,4 @@
-ARG from=ubuntu:22.04
+ARG from=ubuntu:18.04
 FROM ${from}
 MAINTAINER yx9527
 ENV DEBIAN_FRONTEND noninteractive
@@ -34,7 +34,7 @@ deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ $(lsb_release -cs)-security mai
     apt-get -y install libopencv-dev && \
     apt-get -y install default-jdk sbt && \
     apt-get -y install ddd lcov valgrind && \
-    apt-get -y install $(if [ ]; then echo qt5-default; else echo qtbase5-dev libfuse2; fi) && \
+    apt-get -y install $(if [ ! ]; then echo qt5-default; else echo qtbase5-dev libfuse2; fi) && \
     apt-get -y install libsdl2-2.0 libsdl2-dev && \
     apt-get -y install mlocate numactl && \
     apt-get -y install gcc-multilib && \
@@ -49,9 +49,9 @@ deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ $(lsb_release -cs)-security mai
     if [ -f /usr/bin/python3 ]; then \
         update-alternatives --install /usr/bin/python python /usr/bin/python3 300; \
     fi && \
-    curl https://raw.githubusercontent.com/yx9527/docker/master/vooya_u22-1.9-amd64.deb > /tmp/vooya.deb && \
+    curl https://raw.githubusercontent.com/yx9527/docker/master/vooya_u18-1.9-amd64.deb > /tmp/vooya.deb && \
     for i in /tmp/vooya.deb; do if [ -f $i ]; then \
-        if [ ]; then apt-get -y install libtiffxx5 libopenexr22; fi && \
+        if [ ! ]; then apt-get -y install libtiffxx5 libopenexr22; fi && \
         dpkg -i $i && rm $i; \
     fi done && \
     apt-get -y install git-lfs && git lfs install && \
