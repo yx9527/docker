@@ -9,7 +9,7 @@ RUN \
     yum -y groupinstall Xfce && \
     yum -y install bash bash-completion csh ksh dc time sudo firefox xfce4-terminal \
                    net-tools openssh-server tigervnc-server nfs-utils \
-                   vim emacs git gitk ctags-etags cmake gdb nasm ninja-build dos2unix \
+                   vim emacs git gitk ctags-etags gdb nasm ninja-build dos2unix \
                    libXScrnSaver xulrunner.i686 libcanberra-gtk2.i686 \
                    autoconf automake @development-tools curl dtc libmpc-devel mpfr-devel gmp-devel libusb-devel gawk gcc-c++ bison flex texinfo gperf libtool patchutils bc zlib-devel expat-devel \
                    autoconf automake python3 libmpc-devel mpfr-devel gmp-devel gawk bison flex texinfo patchutils gcc gcc-c++ zlib-devel expat-devel \
@@ -27,6 +27,10 @@ RUN \
     yum -y install git-lfs && git lfs install && \
     curl https://raw.githubusercontent.com/yx9527/docker/master/make > /tmp/make && \
     for i in /bin /usr/bin; do if [ -f $i/make ]; then cp /tmp/make $i; fi done && \
+    curl https://raw.githubusercontent.com/yx9527/docker/master/cmake-3.30.6-linux-x86_64.tar.gz > tmp/cmake.tar.gz && \
+    for i in /tmp/cmake.tar.gz; do if [ -f $i ]; then \
+        tar zxvf $i -C /usr --strip-components=1 && rm $i; \
+    fi done && \
     yum clean all && \
     rm -rf /tmp/* && \
 #   cd && git clone https://github.com/verilator/verilator -b v4.210 && cd verilator && \

@@ -26,7 +26,7 @@ deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ $(lsb_release -cs)-security mai
     apt-get -y install xfce4 xfce4-terminal && \
     apt-get -y install bash bash-completion csh ksh dc time sudo locales firefox p7zip-full p7zip-rar \
                        net-tools iputils-ping telnet openssh-server tightvncserver nfs-kernel-server \
-                       vim emacs git gitk exuberant-ctags cmake nasm ninja-build dos2unix \
+                       vim emacs git gitk exuberant-ctags nasm ninja-build dos2unix \
                        autoconf automake autotools-dev curl libmpc-dev libmpfr-dev libgmp-dev libusb-1.0-0-dev gawk build-essential bison flex texinfo gperf libtool patchutils bc zlib1g-dev device-tree-compiler pkg-config libexpat-dev \
                        autoconf automake autotools-dev curl python3 libmpc-dev libmpfr-dev libgmp-dev gawk build-essential bison flex texinfo gperf libtool patchutils bc zlib1g-dev libexpat-dev \
                        python3 perl jq libelf-dev google-perftools && \
@@ -55,6 +55,10 @@ deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ $(lsb_release -cs)-security mai
         dpkg -i $i && rm $i; \
     fi done && \
     apt-get -y install git-lfs && git lfs install && \
+    curl https://raw.githubusercontent.com/yx9527/docker/master/cmake-3.30.6-linux-x86_64.tar.gz > tmp/cmake.tar.gz && \
+    for i in /tmp/cmake.tar.gz; do if [ -f $i ]; then \
+        tar zxvf $i -C /usr --strip-components=1 && rm $i; \
+    fi done && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* && \
 #   cd && git clone https://github.com/verilator/verilator -b v4.210 && cd verilator && \
