@@ -1,6 +1,8 @@
 FROM centos:centos7
 MAINTAINER yangxu
 RUN \
+    sed -i -e 's/^\s*mirrorlist/#&/' -e 's/^\s*#\?\s*\(baseurl\)\s*=\s*\S\+\(\/\(os\|updates\|extras\|centosplus\)\/\)/\1=http:\/\/mirrors.aliyun.com\/centos\/$releasever\2/' /etc/yum.repos.d/*.repo && \
+    sed -i -e 's/^\s*metalink/#&/' -e 's/^\s*#\?\s*\(baseurl\)\s*=\s*\S\+\(\/epel\/\)/\1=http:\/\/mirrors.aliyun.com\2/' /etc/yum.repos.d/*.repo && \
     yum -y update && \
     yum -y install bash bash-completion curl git vim @development-tools ninja-build && \
     yum -y install autoconf automake ninja-build && \

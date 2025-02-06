@@ -1,8 +1,8 @@
 FROM centos:centos7
-MAINTAINER yx9527
+MAINTAINER yangxu
 RUN \
-#   sed -i -e 's/^\s*mirrorlist/#&/' -e 's/^\s*#\(\s*baseurl\s*=\s*\).\+\(os\|updates\|extras\|centosplus\)/\1http:\/\/192.168.100.100\/centos\/7.7.1908\/\2/' /etc/yum.repos.d/CentOS-Base.repo && \
-#   sed -i -e 's/^\s*metalink/#&/' -e 's/^\s*#\(\s*baseurl\s*=\s*\).\+\(epel\)/\1http:\/\/192.168.100.100\/\2/' /etc/yum.repos.d/CentOS-Base.repo && \
+    sed -i -e 's/^\s*mirrorlist/#&/' -e 's/^\s*#\?\s*\(baseurl\)\s*=\s*\S\+\(\/\(os\|updates\|extras\|centosplus\)\/\)/\1=http:\/\/mirrors.aliyun.com\/centos\/$releasever\2/' /etc/yum.repos.d/*.repo && \
+    sed -i -e 's/^\s*metalink/#&/' -e 's/^\s*#\?\s*\(baseurl\)\s*=\s*\S\+\(\/epel\/\)/\1=http:\/\/mirrors.aliyun.com\2/' /etc/yum.repos.d/*.repo && \
     curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.rpm.sh | bash && \
     yum -y update && \
     yum -y install epel-release redhat-lsb && \
