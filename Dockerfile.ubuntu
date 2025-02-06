@@ -1,22 +1,24 @@
 ARG from=ubuntu:18.04
 FROM ${from}
-MAINTAINER yx9527
+MAINTAINER yangxu
 ENV DEBIAN_FRONTEND noninteractive
 RUN \
     apt-get update && \
     apt-get -y install apt-transport-https apt-utils curl gnupg-agent lsb-core lsb-release wget && \
+    c=$(lsb_release -cs) && \
+    r=$(lsb_release -rs|awk -F. '{print $1}') && \
     echo "\
-deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ $(lsb_release -cs) main restricted universe multiverse\n\
-"#" deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ $(lsb_release -cs) main restricted universe multiverse\n\
-deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ $(lsb_release -cs)-updates main restricted universe multiverse\n\
-"#" deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ $(lsb_release -cs)-updates main restricted universe multiverse\n\
-deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ $(lsb_release -cs)-backports main restricted universe multiverse\n\
-"#" deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ $(lsb_release -cs)-backports main restricted universe multiverse\n\
-deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ $(lsb_release -cs)-security main restricted universe multiverse\n\
-"#" deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ $(lsb_release -cs)-security main restricted universe multiverse\n\
-"#" deb http://192.168.100.100/ubuntu/ $(lsb_release -cs) main restricted universe multiverse\n\
-"#" deb http://192.168.100.100/ubuntu/ $(lsb_release -cs)-updates main restricted universe multiverse\n\
-"#" deb http://192.168.100.100/ubuntu/ $(lsb_release -cs)-security main restricted universe multiverse\n\
+deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ $c main restricted universe multiverse\n\
+"#" deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ $c main restricted universe multiverse\n\
+deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ $c-updates main restricted universe multiverse\n\
+"#" deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ $c-updates main restricted universe multiverse\n\
+deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ $c-backports main restricted universe multiverse\n\
+"#" deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ $c-backports main restricted universe multiverse\n\
+deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ $c-security main restricted universe multiverse\n\
+"#" deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ $c-security main restricted universe multiverse\n\
+"#" deb http://192.168.100.100/ubuntu/ $c main restricted universe multiverse\n\
+"#" deb http://192.168.100.100/ubuntu/ $c-updates main restricted universe multiverse\n\
+"#" deb http://192.168.100.100/ubuntu/ $c-security main restricted universe multiverse\n\
     " | tee /etc/apt/sources.list && \
     echo "deb https://repo.scala-sbt.org/scalasbt/debian /" | tee /etc/apt/sources.list.d/sbt.list && \
     curl -sL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x2EE0EA64E40A89B84B2DF73499E82A75642AC823" | apt-key add && \
@@ -34,7 +36,7 @@ deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ $(lsb_release -cs)-security mai
     apt-get -y install libopencv-dev && \
     apt-get -y install default-jdk sbt && \
     apt-get -y install ddd lcov valgrind && \
-    apt-get -y install $(if [ ! ]; then echo qt5-default; else echo qtbase5-dev libfuse2; fi) && \
+    apt-get -y install $(if [ $r -lt 22 ]; then echo qt5-default; else echo qtbase5-dev libfuse2; fi) && \
     apt-get -y install libsdl2-2.0 libsdl2-dev && \
     apt-get -y install mlocate numactl && \
     apt-get -y install gcc-multilib && \
@@ -49,9 +51,9 @@ deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ $(lsb_release -cs)-security mai
     if [ -f /usr/bin/python3 ]; then \
         update-alternatives --install /usr/bin/python python /usr/bin/python3 300; \
     fi && \
-    curl https://raw.githubusercontent.com/yx9527/docker/master/vooya_u18-1.9-amd64.deb > /tmp/vooya.deb && \
+    curl https://raw.githubusercontent.com/yx9527/docker/master/vooya_u$r-1.9-amd64.deb > /tmp/vooya.deb && \
     for i in /tmp/vooya.deb; do if [ -f $i ]; then \
-        if [ ! ]; then apt-get -y install libtiffxx5 libopenexr22; fi && \
+        if [ $r -lt 22 ]; then apt-get -y install libtiffxx5 libopenexr22; fi && \
         dpkg -i $i && rm $i; \
     fi done && \
     apt-get -y install git-lfs && git lfs install && \
