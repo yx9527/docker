@@ -8,6 +8,8 @@ RUN \
     apt-get -y install bash bash-completion curl git vim build-essential ninja-build && \
     apt-get -y install autoconf automake autotools-dev ninja-build && \
     apt-get -y install autoconf automake autotools-dev curl python3 libmpc-dev libmpfr-dev libgmp-dev gawk build-essential bison flex texinfo gperf libtool patchutils bc zlib1g-dev libexpat-dev device-tree-compiler && \
+    apt-get -y install libprotobuf-dev protobuf-compiler && \
+#   apt-get -y install libopencv-dev && \
     curl https://raw.githubusercontent.com/yx9527/docker/master/cmake-3.30.6-linux-x86_64.tar.gz > tmp/cmake.tar.gz && \
     for i in /tmp/cmake.tar.gz; do if [ -f $i ]; then \
         tar zxvf $i -C /usr --strip-components=1 && rm $i; \
