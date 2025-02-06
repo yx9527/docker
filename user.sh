@@ -5,10 +5,10 @@ if [ $1 ]; then
     tag=$1; shift
 fi
 docker images
-if [ "`docker images|awk '/^yx9527\/'"$img"'\s+'"$tag"'/'`" ]; then
-    docker tag yx9527/$img:$tag $img:$tag
+if [ "`docker images|awk '/^yangxu\/'"$img"'\s+'"$tag"'/'`" ]; then
+    docker tag yangxu/$img:$tag $img:$tag
 else
-    docker tag $img:$tag yx9527/$img:$tag
+    docker tag $img:$tag yangxu/$img:$tag
 fi
 cat > Dockerfile << EOF
 FROM $img:$tag

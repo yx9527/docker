@@ -1,5 +1,5 @@
 FROM openjdk:8-alpine
-MAINTAINER yx9527
+MAINTAINER yangxu
 RUN echo $'\
 if [ "$#" -eq 0 ]; then\n\
     /usr/bin/env\n\
