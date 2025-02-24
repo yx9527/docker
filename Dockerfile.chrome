@@ -1,0 +1,11 @@
+ARG from=ubuntu:latest
+FROM ${from}
+RUN \
+    apt-get update && \
+    for i in /tmp/google-chrome-stable_current_amd64.deb; do \
+        curl https://dl.google.com/linux/direct/${i##*/} > $i; \
+        if [ -f $i ]; then apt-get -y install xdg-utils && dpkg -i $i && rm $i; fi \
+    done && \
+    apt-get -y autoremove && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/*
