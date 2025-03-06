@@ -9,7 +9,7 @@ RUN \
     yum -y install autoconf automake curl python3 libmpc-devel mpfr-devel gmp-devel gawk @development-tools bison flex texinfo gperf libtool patchutils bc zlib-devel expat-devel dtc && \
     yum -y install protobuf-devel protobuf-compiler && \
 #   yum -y install opencv-devel && \
-    curl https://raw.githubusercontent.com/yx9527/docker/master/cmake-3.30.6-linux-x86_64.tar.gz > tmp/cmake.tar.gz && \
+    curl https://raw.githubusercontent.com/yx9527/docker/master/cmake-3.30.6-linux-x86_64.tar.gz > /tmp/cmake.tar.gz && \
     for i in /tmp/cmake.tar.gz; do if [ -f $i ]; then \
         tar zxvf $i -C /usr --strip-components=1 && rm $i; \
     fi done && \
