@@ -26,7 +26,7 @@ RUN \
     for i in /tmp/vooya.rpm; do if [ -f $i ]; then yum -y install boost && rpm -ivh $i && rm $i; fi done && \
     yum -y install git-lfs && git lfs install && \
     curl https://raw.githubusercontent.com/yx9527/docker/master/make > /tmp/make && \
-    for i in /bin /usr/bin; do if [ -f $i/make ]; then cp /tmp/make $i; fi done && \
+    chmod +x /tmp/make && cp /tmp/make /usr/bin && if [ -f /bin/make ]; then cp /tmp/make /bin; fi && \
     curl https://raw.githubusercontent.com/yx9527/docker/master/cmake-3.30.6-linux-x86_64.tar.gz > /tmp/cmake.tar.gz && \
     for i in /tmp/cmake.tar.gz; do if [ -f $i ]; then \
         tar zxvf $i -C /usr --strip-components=1 && rm $i; \
