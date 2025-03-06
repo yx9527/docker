@@ -4,7 +4,7 @@ RUN \
     sed -i -e 's/^\s*mirrorlist/#&/' -e 's/^\s*#\?\s*\(baseurl\)\s*=\s*\S\+\(\/\(os\|updates\|extras\|centosplus\)\/\)/\1=http:\/\/mirrors.aliyun.com\/centos\/$releasever\2/' /etc/yum.repos.d/*.repo && \
     sed -i -e 's/^\s*metalink/#&/' -e 's/^\s*#\?\s*\(baseurl\)\s*=\s*\S\+\(\/epel\/\)/\1=http:\/\/mirrors.aliyun.com\2/' /etc/yum.repos.d/*.repo && \
     yum -y update && \
-    yum -y install bash bash-completion curl git vim @development-tools nasm ninja-build && \
+    yum -y install bash bash-completion curl git vim @development-tools nasm ninja-build pkgconfig && \
     yum -y install autoconf automake ninja-build && \
     yum -y install autoconf automake curl python3 libmpc-devel mpfr-devel gmp-devel gawk @development-tools bison flex texinfo gperf libtool patchutils bc zlib-devel expat-devel dtc && \
     yum -y install protobuf-devel protobuf-compiler && \
