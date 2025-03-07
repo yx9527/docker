@@ -57,10 +57,7 @@ deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ $c-security main restricted uni
         dpkg -i $i && rm $i; \
     fi done && \
     apt-get -y install git-lfs && git lfs install && \
-    curl https://raw.githubusercontent.com/yx9527/docker/master/cmake-3.30.6-linux-x86_64.tar.gz > /tmp/cmake.tar.gz && \
-    for i in /tmp/cmake.tar.gz; do if [ -f $i ]; then \
-        tar zxvf $i -C /usr --strip-components=1 && rm $i; \
-    fi done && \
+    curl https://raw.githubusercontent.com/yx9527/docker/master/cmake-3.30.6-linux-x86_64.tar.gz | tar zx -C /usr --strip-components=1 && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* && \
 #   cd && git clone https://github.com/verilator/verilator -b v4.210 && cd verilator && \
