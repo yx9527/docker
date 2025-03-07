@@ -10,12 +10,19 @@ RUN \
     yum -y install protobuf-devel protobuf-compiler && \
 #   yum -y install opencv-devel && \
     curl https://raw.githubusercontent.com/yx9527/docker/master/make > /tmp/make && \
-    chmod +x /tmp/make && cp /tmp/make /usr/bin && if [ -f /bin/make ]; then cp /tmp/make /bin; fi && \
+    install -m755 /tmp/make /usr/bin && \
+    [ -f /bin/make ] || install -m755 /tmp/make /bin && \
     curl https://raw.githubusercontent.com/yx9527/docker/master/cmake-3.30.6-linux-x86_64.tar.gz | tar zx -C /usr --strip-components=1 && \
     curl https://www.nasm.us/pub/nasm/releasebuilds/2.13.03/nasm-2.13.03.tar.gz | tar zx -C /tmp && \
     for i in /tmp/nasm-2.13.03; do if [ -d $i ]; then \
         cd $i && ./configure && make -j"$(nproc)" && make install && cd -; \
     fi done && \
+    if [ ! "$(which ninja)" ]; then \
+        curl https://raw.githubusercontent.com/yx9527/docker/master/ninja > /tmp/ninja && \
+        install -m755 /tmp/ninja /usr/bin; \
+#       curl https://github.com/ninja-build/ninja/releases/download/v1.12.1/ninja-linux.zip > /tmp/ninja-linux.zip && \
+#       unzip /tmp/ninja-linux.zip -d /usr/bin; \
+    fi && \
     yum clean all && \
     rm -rf /tmp/* && \
     if [ ! -f /bin/sh ] || [ -L /bin/sh ]; then ln -sf /bin/bash /bin/sh; fi && \
