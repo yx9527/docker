@@ -1,12 +1,16 @@
-FROM centos:centos7
+ARG from=centos:centos7
+FROM ${from}
 MAINTAINER yangxu
+ARG python=3.9
+ARG packages="numpy opencv-python pillow portalocker pytest requests tqdm wheel Flask PyYAML"
 RUN \
     sed -i -e 's/^\s*mirrorlist/#&/' -e 's/^\s*#\?\s*\(baseurl\)\s*=\s*\S\+\(\/\(os\|updates\|extras\|centosplus\)\/\)/\1=http:\/\/mirrors.aliyun.com\/centos\/$releasever\2/' /etc/yum.repos.d/*.repo && \
     sed -i -e 's/^\s*metalink/#&/' -e 's/^\s*#\?\s*\(baseurl\)\s*=\s*\S\+\(\/epel\/\)/\1=http:\/\/mirrors.aliyun.com\2/' /etc/yum.repos.d/*.repo && \
     yum -y update && \
     yum -y install bash bash-completion curl rsync git vim gcc-c++ ninja-build pkgconfig && \
     yum -y install autoconf automake ninja-build && \
-    yum -y install autoconf automake curl python3 libmpc-devel mpfr-devel gmp-devel gawk @development-tools bison flex texinfo gperf libtool patchutils bc zlib-devel expat-devel dtc && \
+    yum -y install autoconf automake curl libmpc-devel mpfr-devel gmp-devel gawk @development-tools bison flex texinfo gperf libtool patchutils bc zlib-devel expat-devel dtc && \
+    yum -y install bzip2-devel libffi-devel ncurses-devel readline-devel sqlite-devel openssl-devel xz-devel tk-devel \
     yum -y install protobuf-devel protobuf-compiler && \
 #   yum -y install opencv-devel && \
     curl https://raw.githubusercontent.com/yx9527/docker/master/make > /tmp/make && \
@@ -23,10 +27,21 @@ RUN \
 #       curl https://github.com/ninja-build/ninja/releases/download/v1.12.1/ninja-linux.zip > /tmp/ninja-linux.zip && \
 #       unzip /tmp/ninja-linux.zip -d /usr/bin; \
     fi && \
+    if [ "${python}" ]; then \
+        curl https://pyenv.run | bash && \
+        echo -e '\
+export PYENV_ROOT="$HOME/.pyenv"\n\
+[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"\n\
+eval "$(pyenv init - bash)"\n\
+eval "$(pyenv virtualenv-init -)"' | tee -a ~/.bashrc && \
+        bash -c ". ~/.bashrc && for i in ${python}; do pyenv install \$i && pyenv global \$i && if [ '${packages}' ]; then pip --no-cache-dir install ${packages}; fi; done"; \
+    else \
+        yum -y install python3; \
+    fi && \
     yum clean all && \
     rm -rf /tmp/* && \
     if [ ! -f /bin/sh ] || [ -L /bin/sh ]; then ln -sf /bin/bash /bin/sh; fi && \
     useradd -m -s /bin/bash yangxu && \
     echo "yangxu: " | chpasswd && \
     echo "root: " | chpasswd
-CMD ["/sbin/init"]
+CMD ["/bin/bash"]
