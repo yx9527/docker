@@ -59,6 +59,11 @@ deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ $c-security main restricted uni
     fi done && \
     apt-get -y install git-lfs && git lfs install && \
     curl https://raw.githubusercontent.com/yx9527/docker/master/cmake-3.30.6-linux-x86_64.tar.gz | tar zx -C /usr --strip-components=1 && \
+    if [ $r -lt 22 ]; then \
+        curl https://raw.githubusercontent.com/yx9527/docker/master/ninja > /tmp/ninja && \
+        install -m755 /tmp/ninja /usr/bin; \
+#       curl https://github.com/ninja-build/ninja/releases/download/v1.12.2/ninja-linux.zip | unzip -d /usr/bin; \
+    fi && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* && \
 #   cd && git clone https://github.com/verilator/verilator -b v4.210 && cd verilator && \
