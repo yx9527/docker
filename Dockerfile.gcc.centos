@@ -10,7 +10,7 @@ RUN \
     yum -y install bash bash-completion curl rsync git vim gcc-c++ ninja-build pkgconfig && \
     yum -y install autoconf automake ninja-build && \
     yum -y install autoconf automake curl libmpc-devel mpfr-devel gmp-devel gawk @development-tools bison flex texinfo gperf libtool patchutils bc zlib-devel expat-devel dtc && \
-    yum -y install bzip2-devel libffi-devel ncurses-devel readline-devel sqlite-devel openssl-devel xz-devel tk-devel \
+    yum -y install bzip2 bzip2-devel libffi-devel ncurses-devel readline-devel sqlite-devel openssl-devel xz-devel tk-devel \
     yum -y install protobuf-devel protobuf-compiler && \
 #   yum -y install opencv-devel && \
     curl https://raw.githubusercontent.com/yx9527/docker/master/make > /tmp/make && \

@@ -14,7 +14,7 @@ RUN \
                    libXScrnSaver xulrunner.i686 libcanberra-gtk2.i686 \
                    autoconf automake @development-tools curl dtc libmpc-devel mpfr-devel gmp-devel libusb-devel gawk gcc-c++ bison flex texinfo gperf libtool patchutils bc zlib-devel expat-devel \
                    autoconf automake python3 libmpc-devel mpfr-devel gmp-devel gawk bison flex texinfo patchutils gcc gcc-c++ zlib-devel expat-devel \
-                   bzip2-devel libffi-devel xz-devel ncurses-devel readline-devel sqlite-devel openssl-devel tk-devel \
+                   bzip2 bzip2-devel libffi-devel xz-devel ncurses-devel readline-devel sqlite-devel openssl-devel tk-devel \
                    python3 perl jq elfutils-libelf-devel gperftools && \
     yum -y install protobuf-devel protobuf-compiler && \
     yum -y install opencv-devel && \
