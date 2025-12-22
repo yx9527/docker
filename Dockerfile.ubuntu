@@ -63,6 +63,10 @@ deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ $c-security main restricted uni
         curl https://raw.githubusercontent.com/yx9527/docker/master/ninja > /tmp/ninja && \
         install -m755 /tmp/ninja /usr/bin; \
 #       curl https://github.com/ninja-build/ninja/releases/download/v1.12.2/ninja-linux.zip | unzip -d /usr/bin; \
+        curl https://www.nasm.us/pub/nasm/releasebuilds/2.16.03/nasm-2.16.03.tar.gz | tar zx -C /tmp && \
+        for i in /tmp/nasm-2.16.03; do if [ -d $i ]; then \
+            cd $i && ./configure && make -j"$(nproc)" && make install && cd -; \
+        fi done; \
     fi && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* && \
