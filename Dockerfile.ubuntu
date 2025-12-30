@@ -26,7 +26,7 @@ deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ $c-security main restricted uni
     apt-get update && \
     apt-get -y dist-upgrade && \
     apt-get -y install xfce4 xfce4-terminal && \
-    apt-get -y install bash bash-completion csh ksh dc time sudo locales firefox p7zip-full p7zip-rar \
+    apt-get -y install bash bash-completion csh ksh dc time sudo locales firefox p7zip-full p7zip-rar unzip \
                        net-tools iputils-ping telnet openssh-server tightvncserver nfs-kernel-server \
                        vim emacs git gitk exuberant-ctags nasm ninja-build dos2unix \
                        autoconf automake autotools-dev curl libmpc-dev libmpfr-dev libgmp-dev libusb-1.0-0-dev gawk build-essential bison flex texinfo gperf libtool patchutils bc zlib1g-dev device-tree-compiler pkg-config libexpat-dev \

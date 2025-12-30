@@ -7,7 +7,7 @@ RUN \
     sed -i -e 's/^\s*mirrorlist/#&/' -e 's/^\s*#\?\s*\(baseurl\)\s*=\s*\S\+\(\/\(os\|updates\|extras\|centosplus\)\/\)/\1=http:\/\/mirrors.aliyun.com\/centos\/$releasever\2/' /etc/yum.repos.d/*.repo && \
     sed -i -e 's/^\s*metalink/#&/' -e 's/^\s*#\?\s*\(baseurl\)\s*=\s*\S\+\(\/epel\/\)/\1=http:\/\/mirrors.aliyun.com\2/' /etc/yum.repos.d/*.repo && \
     yum -y update && \
-    yum -y install bash bash-completion curl rsync git vim gcc-c++ ninja-build pkgconfig && \
+    yum -y install bash bash-completion curl rsync git vim gcc-c++ ninja-build pkgconfig patch unzip && \
     yum -y install autoconf automake ninja-build && \
     yum -y install autoconf automake curl libmpc-devel mpfr-devel gmp-devel gawk @development-tools bison flex texinfo gperf libtool patchutils bc zlib-devel expat-devel dtc && \
     yum -y install bzip2 bzip2-devel libffi-devel ncurses-devel readline-devel sqlite-devel openssl-devel xz-devel tk-devel \

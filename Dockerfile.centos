@@ -8,7 +8,7 @@ RUN \
     yum -y update && \
     yum -y install epel-release redhat-lsb && \
     yum -y groupinstall Xfce && \
-    yum -y install bash bash-completion csh ksh dc time sudo firefox xfce4-terminal \
+    yum -y install bash bash-completion csh ksh dc time sudo firefox xfce4-terminal patch unzip \
                    net-tools openssh-server tigervnc-server nfs-utils \
                    vim emacs git gitk ctags-etags gdb ninja-build dos2unix \
                    libXScrnSaver xulrunner.i686 libcanberra-gtk2.i686 \

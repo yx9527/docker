@@ -7,7 +7,7 @@ ARG packages="numpy opencv-python pillow portalocker pytest requests tqdm wheel 
 RUN \
     apt-get update && \
     apt-get -y dist-upgrade && \
-    apt-get -y install bash bash-completion curl rsync git vim build-essential nasm ninja-build pkg-config && \
+    apt-get -y install bash bash-completion curl rsync git vim build-essential nasm ninja-build pkg-config unzip && \
     apt-get -y install autoconf automake autotools-dev ninja-build && \
     apt-get -y install autoconf automake autotools-dev curl libmpc-dev libmpfr-dev libgmp-dev gawk build-essential bison flex texinfo gperf libtool patchutils bc zlib1g-dev libexpat-dev device-tree-compiler && \
     apt-get -y install libbz2-dev libffi-dev liblzma-dev libncurses5-dev libreadline-dev libsqlite3-dev libssl-dev && \
