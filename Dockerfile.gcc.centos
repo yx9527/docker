@@ -2,7 +2,6 @@ ARG from=centos:centos7
 FROM ${from}
 MAINTAINER yangxu
 ARG python=3.9
-ARG packages="numpy opencv-python pillow portalocker pytest requests tqdm wheel Flask PyYAML"
 RUN \
     sed -i -e 's/^\s*mirrorlist/#&/' -e 's/^\s*#\?\s*\(baseurl\)\s*=\s*\S\+\(\/\(os\|updates\|extras\|centosplus\)\/\)/\1=http:\/\/mirrors.aliyun.com\/centos\/$releasever\2/' /etc/yum.repos.d/*.repo && \
     sed -i -e 's/^\s*metalink/#&/' -e 's/^\s*#\?\s*\(baseurl\)\s*=\s*\S\+\(\/epel\/\)/\1=http:\/\/mirrors.aliyun.com\2/' /etc/yum.repos.d/*.repo && \
@@ -31,7 +30,8 @@ export PYENV_ROOT="$HOME/.pyenv"\n\
 [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"\n\
 eval "$(pyenv init - bash)"\n\
 eval "$(pyenv virtualenv-init -)"' | tee -a ~/.bashrc && \
-        bash -c ". ~/.bashrc && for i in ${python}; do pyenv install \$i && pyenv global \$i && if [ '${packages}' ]; then pip --no-cache-dir install ${packages}; fi; done"; \
+        curl https://raw.githubusercontent.com/yx9527/docker/master/requirements.txt | sed 's/^\s*optree/# &/' > /tmp/requirements.txt && \
+        bash -c ". ~/.bashrc && for i in ${python}; do pyenv install \$i && pyenv global \$i && pip --no-cache-dir install -r /tmp/requirements.txt; done"; \
     else \
         yum -y install python3; \
     fi && \

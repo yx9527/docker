@@ -3,7 +3,6 @@ FROM ${from}
 MAINTAINER yangxu
 ENV DEBIAN_FRONTEND noninteractive
 ARG python="3.13 3.12 3.11 3.10 3.9"
-ARG packages="numpy opencv-python pillow portalocker pytest requests tqdm wheel Flask PyYAML"
 RUN \
     apt-get update && \
     apt-get -y dist-upgrade && \
@@ -28,7 +27,8 @@ export PYENV_ROOT="$HOME/.pyenv"\n\
 [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"\n\
 eval "$(pyenv init - bash)"\n\
 eval "$(pyenv virtualenv-init -)"' | tee -a ~/.bashrc && \
-        bash -c "eval \"\$(tail -4 ~/.bashrc)\" && for i in ${python}; do pyenv install \$i && pyenv global \$i && if [ '${packages}' ]; then pip --no-cache-dir install ${packages}; fi; done"; \
+        curl https://raw.githubusercontent.com/yx9527/docker/master/requirements.txt > /tmp/requirements.txt && \
+        bash -c "eval \"\$(tail -4 ~/.bashrc)\" && for i in ${python}; do pyenv install \$i && pyenv global \$i && pip --no-cache-dir install -r /tmp/requirements.txt; done"; \
     else \
         apt-get -y install python3; \
     fi && \
